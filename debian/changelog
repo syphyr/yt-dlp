@@ -1,4 +1,10 @@
-yt-dlp (2022.08.19-1~bpo20.04.1) focal-backports; urgency=medium
+yt-dlp (2023.06.22-1~bpo18.04.1) bionic; urgency=medium
+
+  * Upstream release
+
+ -- syphyr <syphyr@gmail.com>  Fri, 30 Jun 2023 23:24:31 +0100
+
+yt-dlp (2022.08.19-1~bpo20.04.1) bionic; urgency=medium
 
   * No-change backport to focal.
 
