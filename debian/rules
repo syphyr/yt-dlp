@@ -18,7 +18,7 @@ override_dh_clean:
 	dh_clean
 
 override_dh_auto_test:
-#	make offlinetest PYTHON=python3
+	make offlinetest PYTHON=python3
 
 override_dh_installchangelogs:
 	dh_installchangelogs Changelog.md
