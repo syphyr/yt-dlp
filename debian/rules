@@ -1,24 +1,32 @@
 #!/usr/bin/make -f
 
+PROJECT = yt-dlp
+OUT = ${CURDIR}/debian/${PROJECT}
+
 #export DH_VERBOSE = 1
-export PYBUILD_NAME = yt_dlp
-export PYBUILD_INTERPRETERS=python3.7
-export PYBUILD_VERSIONS=3.7
+export DH_OPTIONS
+export PYTHON=/usr/bin/python3.9
+export PREFIX=/usr
 
 %:
-	dh $@ --with python3 --buildsystem=pybuild
+	dh $@
+
+override_dh_auto_build:
+	make
 
 override_dh_auto_configure:
-	PREFIX=/usr SYSCONFDIR=/etc make
 	python3 devscripts/set-variant.py debian -M "As yt-dlp has been installed via apt, you should use that to update.  If you're on a stable release, also check backports."
-	rm yt-dlp
 
 override_dh_clean:
 	make clean
 	dh_clean
 
+override_dh_auto_install:
+	dh_auto_install --destdir="${OUT}"
+#	install -Dm755 "dist/yt-dlp_linux" "${OUT}/usr/bin/${PROJECT}"
+
 override_dh_auto_test:
-	make offlinetest PYTHON=python3
+	make offlinetest
 
 override_dh_installchangelogs:
 	dh_installchangelogs Changelog.md
