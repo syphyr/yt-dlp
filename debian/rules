@@ -26,7 +26,7 @@ override_dh_auto_install:
 #	install -Dm755 "dist/yt-dlp_linux" "${OUT}/usr/bin/${PROJECT}"
 
 override_dh_auto_test:
-#	make offlinetest
+	make offlinetest
 
 override_dh_installchangelogs:
 	dh_installchangelogs Changelog.md
