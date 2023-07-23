@@ -22,7 +22,6 @@ Package: yt-dlp
 Architecture: all
 Depends:
  ${misc:Depends},
- ${python3:Depends},
  python3-pkg-resources
 Recommends:
  aria2 | wget | curl,
