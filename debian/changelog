@@ -1,3 +1,9 @@
+yt-dlp (2024.12.23-1~bpo18.04.1) bionic; urgency=medium
+
+  * Upstream release
+
+ -- syphyr <syphyr@gmail.com>  Sun, 12 Jan 2025 21:34:09 +0100
+
 yt-dlp (2024.11.18-1~bpo18.04.1) bionic; urgency=medium
 
   * Upstream release
