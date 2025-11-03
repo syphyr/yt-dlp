@@ -5,7 +5,7 @@ OUT = ${CURDIR}/debian/${PROJECT}
 
 #export DH_VERBOSE = 1
 export DH_OPTIONS
-export PYTHON=/usr/bin/python3.12
+export PYTHON=/usr/bin/python3.13
 export PREFIX=/usr
 export SYSCONFDIR=/etc
 
