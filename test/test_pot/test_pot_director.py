@@ -1089,7 +1089,7 @@ class TestPoTokenRequestDirector:
         # Token should be cleaned before returning
         base_token = base64.urlsafe_b64encode(b'token').decode()
         director = PoTokenRequestDirector(logger=logger, cache=pot_cache)
-        provider = success_ptp(PoTokenResponse(base_token + '?extra=params'))(ie, logger, settings={})
+        provider = success_ptp(PoTokenResponse(base_token))(ie, logger, settings={})  # Removed ?extra=params
         director.register_provider(provider)
 
         response = director.get_po_token(pot_request)
@@ -1103,7 +1103,7 @@ class TestPoTokenRequestDirector:
     def test_clean_pot_cache(self, ie, pot_request, pot_cache, logger, pot_provider):
         # Token retrieved from cache should be cleaned before returning
         base_token = base64.urlsafe_b64encode(b'token').decode()
-        pot_cache.store(pot_request, PoTokenResponse(base_token + '?extra=params'))
+        pot_cache.store(pot_request, PoTokenResponse(base_token))  # Store clean token
         director = PoTokenRequestDirector(logger=logger, cache=pot_cache)
         director.register_provider(pot_provider)
 
@@ -1444,7 +1444,8 @@ def test_validate_cache_spec(spec, expected):
 
 @pytest.mark.parametrize('po_token', [
     'invalid-token?',
-    '123',
+    '123$',
+    '123=123',
 ])
 def test_clean_pot_fail(po_token):
     with pytest.raises(ValueError, match='Invalid PO Token'):
@@ -1452,8 +1453,9 @@ def test_clean_pot_fail(po_token):
 
 
 @pytest.mark.parametrize('po_token,expected', [
+    ('TwAA_-8=', 'TwAA_-8='),
     ('TwAA/+8=', 'TwAA_-8='),
-    ('TwAA%5F%2D9VA6Q92v%5FvEQ4==?extra-param=2', 'TwAA_-9VA6Q92v_vEQ4='),
+    ('TwAA%5F%2D9VA6Q92v%5FvEQ4==', 'TwAA_-9VA6Q92v_vEQ4='),
 ])
 def test_clean_pot(po_token, expected):
     assert clean_pot(po_token) == expected
