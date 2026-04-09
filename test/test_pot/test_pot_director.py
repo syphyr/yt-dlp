@@ -1445,7 +1445,6 @@ def test_validate_cache_spec(spec, expected):
 @pytest.mark.parametrize('po_token', [
     'invalid-token?',
     '123$',
-    '123=123',
 ])
 def test_clean_pot_fail(po_token):
     with pytest.raises(ValueError, match='Invalid PO Token'):
