@@ -6,6 +6,7 @@ import dataclasses
 import datetime as dt
 import hashlib
 import json
+import re
 import traceback
 import typing
 import urllib.parse
@@ -433,32 +434,13 @@ def provider_display_list(providers: Iterable[IEContentProvider]):
 def clean_pot(po_token: str):
     # Clean and validate the PO Token. This will strip invalid characters off
     # (e.g. additional url params the user may accidentally include)
-    if not po_token:
+    mobj = re.match(r'([^?&#]+)', urllib.parse.unquote(po_token))
+    if not mobj:
         raise ValueError('Invalid PO Token')
 
-    # Extract token part before any URL parameters/fragments
-    token_part = po_token.split('?', maxsplit=1)[0].split('#', maxsplit=1)[0]
-    token_part = urllib.parse.unquote(token_part)
-
-    # Convert standard base64 to URL-safe
-    token_part = token_part.replace('+', '-').replace('/', '_')
-
-    # Validate base64 characters
-    valid_chars = set(
-        'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-        'abcdefghijklmnopqrstuvwxyz'
-        '0123456789-_=',
-    )
-    if not all(c in valid_chars for c in token_part):
-        raise ValueError('Invalid PO Token')
-
-    # Ensure proper padding
-    pad_length = len(token_part) % 4
-    if pad_length:
-        token_part += '=' * (4 - pad_length)
     try:
         return base64.urlsafe_b64encode(
-            base64.urlsafe_b64decode(token_part)).decode()
+            base64.urlsafe_b64decode(mobj.group(1))).decode()
     except (binascii.Error, ValueError):
         raise ValueError('Invalid PO Token')
 
