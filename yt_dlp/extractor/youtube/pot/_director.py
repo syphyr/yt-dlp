@@ -437,7 +437,7 @@ def clean_pot(po_token: str):
         raise ValueError('Invalid PO Token')
 
     # Extract token part before any URL parameters/fragments
-    token_part = po_token.split('?')[0].split('#')[0]
+    token_part = po_token.split('?', maxsplit=1)[0].split('#', maxsplit=1)[0]
     token_part = urllib.parse.unquote(token_part)
 
     # Convert standard base64 to URL-safe
